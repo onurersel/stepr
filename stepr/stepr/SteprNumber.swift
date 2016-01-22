@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import anim
 
 class SteprNumber : UIView {
     
     
     var digitContainer : UIView?
-    var currentDigits = [UILabel]()
-    
+    var currentDigits = [SteprDigit]()
     
     var currentNumber : Int?
+    var didPlacedBefore : Bool = false
     
     func prepare () {
         
@@ -24,42 +25,25 @@ class SteprNumber : UIView {
         digitContainer = UIView()
         self.addSubview(digitContainer!)
         
-        placeNumber(12)
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "test1", userInfo: nil, repeats: false)
-        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "test2", userInfo: nil, repeats: false)
-        NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: "test3", userInfo: nil, repeats: false)
-        NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: "test4", userInfo: nil, repeats: false)
+        placeNumber(8)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "test1", userInfo: nil, repeats: true)
+        
     }
     
     
     @objc func test1 () {
-        placeNumber(13)
-    }
-    @objc func test2 () {
-        placeNumber(136)
-    }
-    @objc func test3 () {
-        placeNumber(8136)
-    }
-    @objc func test4 () {
-        placeNumber(813)
+        placeNumber(currentNumber!+1)
     }
     
     
     
     private func placeNumber (num : Int) {
         
-        
         let numStr = String(num)
-        print("===========================  old:\(currentNumber)  new:\(num)")
-        
-        currentNumber = num
         
         let count = max(numStr.characters.count, currentDigits.count)
         
         for var i = 0; i < count; ++i {
-            
-            print("char index \(i)-----------")
             
             if i < numStr.characters.count {
                 let char = numStr[numStr.startIndex.advancedBy(i)]
@@ -69,8 +53,7 @@ class SteprNumber : UIView {
                     let digit = requestDigit(char)
                     digitContainer!.addSubview(digit)
                     currentDigits.append(digit)
-                    
-                    print("insert \(String(char))")
+                    digit.showAnimation(nil)
                 } else {
                     
                     //get matching digit
@@ -79,58 +62,52 @@ class SteprNumber : UIView {
                     //request new digit if current digit and char doesn't match
                     if digit.text != String(char) {
                         
-                        print("remove \(digit.text) and insert \(String(char))")
+                        let oldNum = Int(digit.text)
                         
                         //remove old digit
-                        digit.removeFromSuperview()
                         currentDigits.removeAtIndex(i)
+                        digit.hideAnimation(Int(String(char)))
                         
                         //add new digit
                         let d = requestDigit(char)
                         digitContainer!.addSubview(d)
                         currentDigits.insert(d, atIndex: i)
                         
-                    } else {
-                        print("no change")
+                        d.showAnimation(oldNum)
+                        
                     }
                 }
             } else {
                 
                 //remove excess digits
                 let digit = currentDigits[i]
-                digit.removeFromSuperview()
                 currentDigits.removeAtIndex(i)
                 
-                print("remove \(digit.text)")
+                digit.hideAnimation(nil)
+                
             }
         }
         
+        placeDigits(currentDigits)
         
-        print("currentdigits count \(currentDigits.count)")
         
-        UIView.animateWithDuration(0.5) {
-            self.placeDigits(self.currentDigits)
-        }
-        
+        currentNumber = num
     }
     
-    private func requestDigit (digitChar : Character) -> UILabel {
+    private func requestDigit (digitChar : Character) -> SteprDigit {
         
-        var digit : UILabel
+        var digit : SteprDigit
         
-        digit = UILabel()
-        digit.textColor = UIColor.blackColor()
-        digit.font = UIFont.systemFontOfSize(64)
-        
+        digit = SteprDigit()
         digit.text = String(digitChar)
-        digit.sizeToFit()
+        
         return digit
     }
     
     
     
     
-    private func placeDigits (digits : [UILabel]) {
+    private func placeDigits (digits : [SteprDigit]) {
         
         //abort if there's no digits
         if digits.count == 0 {
@@ -151,9 +128,17 @@ class SteprNumber : UIView {
         
         
         //align container
-        digitContainer!.frame.origin.x = self.frame.size.width/2.0 - x/2.0
-        digitContainer!.frame.origin.y = self.frame.size.height/2.0 - digits[0].frame.size.height/2.0
-        
+        if didPlacedBefore {
+            
+            anim(duration:SteprDigit.duration*1.5, easing: Ease.ExpoOut) {
+                self.digitContainer!.frame.origin.x = self.frame.size.width/2.0 - x/2.0
+                self.digitContainer!.frame.origin.y = self.frame.size.height/2.0 - digits[0].frame.size.height/2.0
+            }
+            
+        } else {
+            self.digitContainer!.frame.origin.x = self.frame.size.width/2.0 - x/2.0
+            self.digitContainer!.frame.origin.y = self.frame.size.height/2.0 - digits[0].frame.size.height/2.0
+        }
     }
     
     
@@ -163,6 +148,6 @@ class SteprNumber : UIView {
         super.layoutSubviews()
         
         placeDigits(currentDigits)
-        
+        didPlacedBefore = true
     }
 }

@@ -17,7 +17,6 @@ class ViewController: UIViewController {
         
         self.view.translatesAutoresizingMaskIntoConstraints = false
         
-        
         let s = SteprNumber()
         s.backgroundColor = UIColor.lightGrayColor()
         s.translatesAutoresizingMaskIntoConstraints = false
@@ -35,6 +34,7 @@ class ViewController: UIViewController {
         self.view.addConstraint(c)
         c = NSLayoutConstraint(item: s, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute:.Top , multiplier: 1, constant: 50)
         self.view.addConstraint(c)
+
     }
 
     override func didReceiveMemoryWarning() {

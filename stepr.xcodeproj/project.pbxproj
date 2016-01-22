@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		95060D811C5145C9009A631C /* SteprDigit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95060D801C5145C9009A631C /* SteprDigit.swift */; };
 		957A0DDF1C51095E0013DE6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A0DDE1C51095E0013DE6F /* AppDelegate.swift */; };
 		957A0DE11C51095E0013DE6F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A0DE01C51095E0013DE6F /* ViewController.swift */; };
 		957A0DE41C51095E0013DE6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 957A0DE21C51095E0013DE6F /* Main.storyboard */; };
 		957A0DE61C51095E0013DE6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 957A0DE51C51095E0013DE6F /* Assets.xcassets */; };
 		957A0DE91C51095E0013DE6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 957A0DE71C51095E0013DE6F /* LaunchScreen.storyboard */; };
 		957A0DF21C510A0C0013DE6F /* SteprNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A0DF11C510A0C0013DE6F /* SteprNumber.swift */; };
+		FC37344A673EB4C0F0647F80 /* Pods_stepr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D84F687B1BA72E552F27D9 /* Pods_stepr.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33D84F687B1BA72E552F27D9 /* Pods_stepr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_stepr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95060D801C5145C9009A631C /* SteprDigit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SteprDigit.swift; sourceTree = "<group>"; };
 		957A0DDB1C51095E0013DE6F /* stepr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = stepr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		957A0DDE1C51095E0013DE6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		957A0DE01C51095E0013DE6F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +28,8 @@
 		957A0DE81C51095E0013DE6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		957A0DEA1C51095E0013DE6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		957A0DF11C510A0C0013DE6F /* SteprNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SteprNumber.swift; path = stepr/SteprNumber.swift; sourceTree = "<group>"; };
+		A5635C6FA2F43E14AE3FFE55 /* Pods-stepr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stepr.release.xcconfig"; path = "Pods/Target Support Files/Pods-stepr/Pods-stepr.release.xcconfig"; sourceTree = "<group>"; };
+		BB7378527CF3198713338EDF /* Pods-stepr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stepr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-stepr/Pods-stepr.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +37,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC37344A673EB4C0F0647F80 /* Pods_stepr.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7D4042A9E1445078F67E1448 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BB7378527CF3198713338EDF /* Pods-stepr.debug.xcconfig */,
+				A5635C6FA2F43E14AE3FFE55 /* Pods-stepr.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		957A0DD21C51095E0013DE6F = {
 			isa = PBXGroup;
 			children = (
 				957A0DDD1C51095E0013DE6F /* stepr */,
 				957A0DDC1C51095E0013DE6F /* Products */,
+				7D4042A9E1445078F67E1448 /* Pods */,
+				A32B9E4BC91DEBE8F2EB4DA4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,8 +89,17 @@
 			isa = PBXGroup;
 			children = (
 				957A0DF11C510A0C0013DE6F /* SteprNumber.swift */,
+				95060D801C5145C9009A631C /* SteprDigit.swift */,
 			);
 			name = stepr;
+			sourceTree = "<group>";
+		};
+		A32B9E4BC91DEBE8F2EB4DA4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				33D84F687B1BA72E552F27D9 /* Pods_stepr.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -82,9 +109,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 957A0DED1C51095E0013DE6F /* Build configuration list for PBXNativeTarget "stepr" */;
 			buildPhases = (
+				EBBC94E92507DED2020F6D9A /* Check Pods Manifest.lock */,
 				957A0DD71C51095E0013DE6F /* Sources */,
 				957A0DD81C51095E0013DE6F /* Frameworks */,
 				957A0DD91C51095E0013DE6F /* Resources */,
+				CB4C4F9DDB3281DA75FDE730 /* Embed Pods Frameworks */,
+				E36F98CD6E5C1BC39D0D973C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -141,6 +171,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CB4C4F9DDB3281DA75FDE730 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-stepr/Pods-stepr-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E36F98CD6E5C1BC39D0D973C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-stepr/Pods-stepr-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EBBC94E92507DED2020F6D9A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		957A0DD71C51095E0013DE6F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -148,6 +226,7 @@
 			files = (
 				957A0DE11C51095E0013DE6F /* ViewController.swift in Sources */,
 				957A0DDF1C51095E0013DE6F /* AppDelegate.swift in Sources */,
+				95060D811C5145C9009A631C /* SteprDigit.swift in Sources */,
 				957A0DF21C510A0C0013DE6F /* SteprNumber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +338,7 @@
 		};
 		957A0DEE1C51095E0013DE6F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB7378527CF3198713338EDF /* Pods-stepr.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = stepr/Info.plist;
@@ -270,6 +350,7 @@
 		};
 		957A0DEF1C51095E0013DE6F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5635C6FA2F43E14AE3FFE55 /* Pods-stepr.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = stepr/Info.plist;
@@ -298,6 +379,7 @@
 				957A0DEF1C51095E0013DE6F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
