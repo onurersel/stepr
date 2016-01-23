@@ -21,10 +21,9 @@ class ViewController: UIViewController {
         s.backgroundColor = UIColor.lightGrayColor()
         s.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(s)
-        s.prepare()
         
         
-        var c = NSLayoutConstraint(item: s, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute:.NotAnAttribute , multiplier: 1, constant: 200)
+        var c = NSLayoutConstraint(item: s, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute:.NotAnAttribute , multiplier: 1, constant: 50)
         self.view.addConstraint(c)
         c = NSLayoutConstraint(item: s, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute:.NotAnAttribute , multiplier: 1, constant: 100)
         self.view.addConstraint(c)

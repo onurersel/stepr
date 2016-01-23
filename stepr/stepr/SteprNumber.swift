@@ -11,28 +11,51 @@ import anim
 
 class SteprNumber : UIView {
     
-    
-    var digitContainer : UIView?
-    var currentDigits = [SteprDigit]()
-    
     var currentNumber : Int?
-    var didPlacedBefore : Bool = false
     
-    func prepare () {
-        
+    private var digitContainer : UIView?
+    private var currentDigits = [SteprDigit]()
+    private var didPlacedBefore : Bool = false
+    private var _adjustsFontSizeToFitWidth : Bool = false
+    
+    var adjustsFontSizeToFitWidth : Bool {
+        get {
+            return _adjustsFontSizeToFitWidth
+        }
+        set (value) {
+            _adjustsFontSizeToFitWidth = value
+            
+            resetContainerTransform()
+            applyContainerTransform()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        prepare()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        prepare()
+    }
+    
+    
+    private func prepare () {
         
         //digit container
         digitContainer = UIView()
         self.addSubview(digitContainer!)
         
-        placeNumber(8)
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "test1", userInfo: nil, repeats: true)
+        placeNumber(32)
+        //NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "test1", userInfo: nil, repeats: true)
         
     }
     
     
     @objc func test1 () {
-        placeNumber(currentNumber!+1)
+        adjustsFontSizeToFitWidth = true
+        //placeNumber(currentNumber!+1)
     }
     
     
@@ -114,6 +137,8 @@ class SteprNumber : UIView {
             return
         }
         
+        //reset transform on container
+        resetContainerTransform()
         
         //align digits
         var x : CGFloat = 0.0
@@ -138,6 +163,31 @@ class SteprNumber : UIView {
         } else {
             self.digitContainer!.frame.origin.x = self.frame.size.width/2.0 - x/2.0
             self.digitContainer!.frame.origin.y = self.frame.size.height/2.0 - digits[0].frame.size.height/2.0
+        }
+        
+        //resize container for adjustsFontSizeToFitWidth
+        applyContainerTransform()
+    }
+    
+    private func resetContainerTransform () {
+        digitContainer?.transform = CGAffineTransformIdentity
+    }
+    private func applyContainerTransform () {
+        if _adjustsFontSizeToFitWidth  &&  currentDigits.count > 0 {
+            if let dc = digitContainer {
+                
+                let lastDigit = currentDigits.last!
+                
+                //update sizes
+                dc.frame.size.width = lastDigit.frame.origin.x + lastDigit.frame.size.width
+                dc.frame.size.height = lastDigit.frame.size.height
+                
+                //apply transform
+                let ratio = self.frame.size.width / dc.frame.size.width
+                if ratio < 1  &&  ratio > 0 {
+                    dc.transform = CGAffineTransformMakeScale(ratio, ratio)
+                }
+            }
         }
     }
     

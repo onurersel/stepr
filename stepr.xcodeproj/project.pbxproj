@@ -14,7 +14,7 @@
 		957A0DE61C51095E0013DE6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 957A0DE51C51095E0013DE6F /* Assets.xcassets */; };
 		957A0DE91C51095E0013DE6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 957A0DE71C51095E0013DE6F /* LaunchScreen.storyboard */; };
 		957A0DF21C510A0C0013DE6F /* SteprNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A0DF11C510A0C0013DE6F /* SteprNumber.swift */; };
-		FC37344A673EB4C0F0647F80 /* Pods_stepr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D84F687B1BA72E552F27D9 /* Pods_stepr.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FC37344A673EB4C0F0647F80 /* Pods_stepr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D84F687B1BA72E552F27D9 /* Pods_stepr.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
