@@ -11,7 +11,7 @@ import anim
 
 class SteprNumber : UIView {
     
-    var currentNumber : Int?
+    var currentNumber : Int = 0
     
     private var digitContainer : UIView?
     private var currentDigits = [SteprDigit]()
@@ -30,6 +30,40 @@ class SteprNumber : UIView {
         }
     }
     
+    var font : UIFont {
+        get {
+            return SteprDigit.font
+        }
+        set (f) {
+            
+            SteprDigit.font = f
+            
+            for digit in currentDigits {
+                digit.updateFont(f)
+            }
+            
+            placeDigits(currentDigits, animate: false)
+            resetContainerTransform()
+            applyContainerTransform()
+        }
+    }
+    
+    var textColor : UIColor {
+        get {
+            return SteprDigit.textColor
+        }
+        set (c) {
+            
+            SteprDigit.textColor = c
+            
+            for digit in currentDigits {
+                digit.updateTextColor(c)
+            }
+        }
+    }
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         prepare()
@@ -47,17 +81,21 @@ class SteprNumber : UIView {
         digitContainer = UIView()
         self.addSubview(digitContainer!)
         
-        placeNumber(32)
-        //NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "test1", userInfo: nil, repeats: true)
-        
+        placeNumber(0)
     }
     
     
-    @objc func test1 () {
-        adjustsFontSizeToFitWidth = true
-        //placeNumber(currentNumber!+1)
-    }
     
+    func addNumber () {
+        changeNumber(currentNumber+1)
+    }
+    func removeNumber () {
+        changeNumber(currentNumber-1)
+    }
+    func changeNumber (number : Int) {
+        currentNumber = number
+        placeNumber(currentNumber)
+    }
     
     
     private func placeNumber (num : Int) {
@@ -111,7 +149,7 @@ class SteprNumber : UIView {
             }
         }
         
-        placeDigits(currentDigits)
+        placeDigits(currentDigits, animate: true)
         
         
         currentNumber = num
@@ -130,7 +168,7 @@ class SteprNumber : UIView {
     
     
     
-    private func placeDigits (digits : [SteprDigit]) {
+    private func placeDigits (digits : [SteprDigit], animate : Bool) {
         
         //abort if there's no digits
         if digits.count == 0 {
@@ -153,7 +191,7 @@ class SteprNumber : UIView {
         
         
         //align container
-        if didPlacedBefore {
+        if didPlacedBefore  &&  animate {
             
             anim(duration:SteprDigit.duration*1.5, easing: Ease.ExpoOut) {
                 self.digitContainer!.frame.origin.x = self.frame.size.width/2.0 - x/2.0
@@ -197,7 +235,7 @@ class SteprNumber : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        placeDigits(currentDigits)
+        placeDigits(currentDigits, animate: false)
         didPlacedBefore = true
     }
 }

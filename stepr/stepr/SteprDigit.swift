@@ -14,6 +14,8 @@ class SteprDigit : UIView {
     static let distance : CGFloat = 50
     static let duration : NSTimeInterval = 0.26
     static let showDelay : NSTimeInterval = 0.06
+    static var font : UIFont = UIFont.systemFontOfSize(64)
+    static var textColor : UIColor = UIColor(white: 0.81, alpha: 1)
     
     var label : UILabel?
     
@@ -24,16 +26,31 @@ class SteprDigit : UIView {
         set (digitString){
             if label == nil {
                 label = UILabel()
-                label!.textColor = UIColor.blackColor()
-                label!.font = UIFont.systemFontOfSize(64)
+                label!.textColor = SteprDigit.textColor
+                label!.font = SteprDigit.font
+                
                 self.addSubview(label!)
             }
             
             label!.text = digitString
-            label!.sizeToFit()
-            self.frame.size.width = label!.frame.size.width
-            self.frame.size.height = label!.frame.size.height
+            fit()
         }
+    }
+    
+    
+    func fit () {
+        label!.sizeToFit()
+        self.frame.size.width = label!.frame.size.width
+        self.frame.size.height = label!.frame.size.height
+    }
+    
+    
+    func updateFont (f : UIFont) {
+        label!.font = f
+        fit()
+    }
+    func updateTextColor (textColor : UIColor) {
+        label!.textColor = textColor
     }
     
     
@@ -65,14 +82,12 @@ class SteprDigit : UIView {
                 }
             }
             
-        }
-        
-        
-        //fade in
-        self.alpha = 0
-        
-        anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.QuintOut) {
-            self.alpha = 1
+            //fade in
+            self.alpha = 0
+            anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.QuintOut) {
+                self.alpha = 1
+            }
+            
         }
         
     }
@@ -106,13 +121,11 @@ class SteprDigit : UIView {
                 }
             }
             
-        }
-        
-        
-        //fade out
-        self.alpha = 1
-        anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
-            self.alpha = 0
+            //fade out
+            self.alpha = 1
+            anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
+                self.alpha = 0
+            }
         }
         
     }
