@@ -11,6 +11,7 @@ import anim
 
 class SteprNumber : UIView {
     
+    var dataArray : [AnyObject]?
     var currentNumber : Int?
     var numberChangeCallback : ((number : Int)->Void)?
     
@@ -87,12 +88,12 @@ class SteprNumber : UIView {
     
     
     
-    func addNumber () {
+    func increase () {
         if let cn = currentNumber {
             changeNumber(cn+1)
         }
     }
-    func removeNumber () {
+    func decrease () {
         if let cn = currentNumber {
             changeNumber(cn-1)
         }
@@ -194,8 +195,6 @@ class SteprNumber : UIView {
         
         digit.text = String(digitChar)
         
-        print("requested...    active:\(currentDigits.count)  recycled:\(digitPool.count)")
-        
         return digit
     }
     
@@ -204,8 +203,6 @@ class SteprNumber : UIView {
         digit.removeFromSuperview()
         digitPool.append(digit)
         
-        
-        print("recycled...    active:\(currentDigits.count)  recycled:\(digitPool.count)")
     }
     
     

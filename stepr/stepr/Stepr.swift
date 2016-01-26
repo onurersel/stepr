@@ -36,6 +36,8 @@ public class Stepr : UIView {
     private var buttonAdd : UIButton?
     private var buttonRemove : UIButton?
     private var buttonAlignment : ButtonAlignment = .Vertical
+    private var _upperLimit : Int?
+    private var _lowerLimit : Int?
     
     
     public var currentNumber : Int {
@@ -44,6 +46,29 @@ public class Stepr : UIView {
                 return cn
             } else {
                 return 0
+            }
+        }
+    }
+    
+    public var upperLimit : Int? {
+        get {
+            return _upperLimit
+        }
+        set (v) {
+            if _lowerLimit == nil  ||  _lowerLimit! <= v {
+                _upperLimit = v
+                updateStatesWithLimits()
+            }
+        }
+    }
+    public var lowerLimit : Int? {
+        get {
+            return _lowerLimit
+        }
+        set (v) {
+            if _upperLimit == nil  ||  _upperLimit! >= v {
+                _lowerLimit = v
+                updateStatesWithLimits()
             }
         }
     }
@@ -119,6 +144,49 @@ public class Stepr : UIView {
         super.layoutSubviews()
     }
     
+    private func updateStatesWithLimits() {
+        
+        if let cn = number?.currentNumber {
+            
+            //lower limit
+            if let ll = lowerLimit {
+                
+                //fit number in lower limit
+                if cn < ll {
+                    number?.changeNumber(ll)
+                }
+                
+                //enable/disable remove button
+                if number?.currentNumber == ll  &&  buttonRemove!.enabled {
+                    buttonRemove!.enabled = false
+                } else if number?.currentNumber != ll  &&  !buttonRemove!.enabled {
+                    buttonRemove!.enabled = true
+                }
+                
+            }
+            
+            if let ul = upperLimit {
+                
+                //fit number in upper limit
+                if cn > ul {
+                    number?.changeNumber(ul)
+                }
+                
+                //enable/disable add button
+                if number?.currentNumber == ul  &&  buttonAdd!.enabled {
+                    buttonAdd!.enabled = false
+                } else if number?.currentNumber != ul  &&  !buttonAdd!.enabled {
+                    buttonAdd!.enabled = true
+                }
+                
+            }
+            
+        }
+        
+        
+        
+        
+    }
     
     /*****************************
     */
@@ -127,11 +195,13 @@ public class Stepr : UIView {
     *****************************/
     
     @objc func addHandler () {
-        number?.addNumber()
+        number?.increase()
+        updateStatesWithLimits()
     }
     
     @objc func removeHandler () {
-        number?.removeNumber()
+        number?.decrease()
+        updateStatesWithLimits()
     }
     
     private func numberChangedHandler (number : Int) {

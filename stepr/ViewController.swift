@@ -21,6 +21,7 @@ class ViewController: UIViewController, SteprDelegate {
         
         s = Stepr(alignment: .Vertical)
         s!.delegate = self
+        
         s!.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(s!)
         
