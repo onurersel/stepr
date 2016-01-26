@@ -54,80 +54,73 @@ class SteprDigit : UIView {
     }
     
     
-    func showAnimation (oldNumber : Int?) {
+    func showAnimation (type : Stepr.AnimationType) {
         
-        if let on = oldNumber {
+        switch type {
             
-            let newNumber = Int(self.text)
-            if on == newNumber {
-                //number didn't change, don't animate
-            } else {
-                if newNumber > on {
-                    
-                    //number is bigger, fade in from below
-                    self.label!.frame.origin.y = -SteprDigit.distance
-                    
-                    anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.BackOut) {
-                        self.label!.frame.origin.y = 0
-                    }
-                    
-                    
-                } else {
-                    
-                    //number is smaller, fade in from above
-                    self.label!.frame.origin.y = SteprDigit.distance
-                    anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.BackOut) {
-                        self.label!.frame.origin.y = 0
-                    }
-                }
+        case .ToUp:
+            
+            //number is bigger, fade in from below
+            self.label!.frame.origin.y = -SteprDigit.distance
+            anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.BackOut) {
+                self.label!.frame.origin.y = 0
             }
             
-            //fade in
-            self.alpha = 0
-            anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.QuintOut) {
-                self.alpha = 1
+            
+        case .ToDown:
+            
+            //number is smaller, fade in from above
+            self.label!.frame.origin.y = SteprDigit.distance
+            anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.BackOut) {
+                self.label!.frame.origin.y = 0
             }
             
+        default:
+            break
         }
         
+        
+        
+        //fade in
+        self.alpha = 0
+        anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.QuintOut) {
+            self.alpha = 1
+        }
     }
     
     
-    func hideAnimation (newNumber  : Int?) {
+    func hideAnimation (type : Stepr.AnimationType) {
         
-        if let nn = newNumber {
+        switch type {
             
-            let oldNumber = Int(self.text)
-            if nn == oldNumber {
-                //number didn't change, fade out
-            } else {
-                if nn > oldNumber {
-                    
-                    //number is bigger, fade out to above
-                    self.label!.frame.origin.y = 0
-                    
-                    anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
-                        self.label!.frame.origin.y = SteprDigit.distance
-                    }
-                    
-                    
-                } else {
-                    
-                    //number is smaller, fade out to below
-                    self.label!.frame.origin.y = 0
-                    anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
-                        self.label!.frame.origin.y = -SteprDigit.distance
-                    }
-                }
-            }
+        case .ToUp:
             
-            //fade out
-            self.alpha = 1
+            //number is bigger, fade out to above
+            self.label!.frame.origin.y = 0
             anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
-                self.alpha = 0
+                self.label!.frame.origin.y = SteprDigit.distance
             }
+            
+            
+            
+        case .ToDown:
+            
+            //number is smaller, fade out to below
+            self.label!.frame.origin.y = 0
+            anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
+                self.label!.frame.origin.y = -SteprDigit.distance
+            }
+            
+        default:
+            break
         }
         
+        
+        //fade out
+        self.alpha = 1
+        anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
+            self.alpha = 0
+        }
     }
     
     

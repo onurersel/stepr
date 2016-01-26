@@ -19,7 +19,7 @@ class ViewController: UIViewController {
 
         self.view.translatesAutoresizingMaskIntoConstraints = false
         
-        s = Stepr(alignment: .Horizontal)
+        s = Stepr(alignment: .Vertical)
         s!.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(s!)
         

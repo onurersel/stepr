@@ -10,9 +10,17 @@ import UIKit
 
 public class Stepr : UIView {
     
+    
     public enum ButtonAlignment {
         case Horizontal, Vertical
     }
+    
+    
+    public enum AnimationType {
+        case ToDown, ToUp, FadeIn
+    }
+
+    
     
     
     private var number : SteprNumber?
