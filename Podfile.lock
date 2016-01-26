@@ -1,10 +1,10 @@
 PODS:
-  - anim (0.0.5)
+  - anim (0.0.6)
 
 DEPENDENCIES:
   - anim
 
 SPEC CHECKSUMS:
-  anim: 1b9ee4bf08e0be478cb166d0108d47fc9ff2bf8f
+  anim: 226969f696b049d021e95028c92711cd8574f3d4
 
 COCOAPODS: 0.38.2

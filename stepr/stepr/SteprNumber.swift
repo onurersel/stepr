@@ -16,6 +16,7 @@ class SteprNumber : UIView {
     
     private var digitContainer : UIView?
     private var currentDigits = [SteprDigit]()
+    private var digitPool = [SteprDigit]()
     private var _adjustsFontSizeToFitWidth : Bool = false
     
     var adjustsFontSizeToFitWidth : Bool {
@@ -148,7 +149,9 @@ class SteprNumber : UIView {
                         
                         //remove old digit
                         currentDigits.removeAtIndex(i)
-                        digit.hideAnimation(animationType)
+                        digit.hideAnimation(animationType) {
+                            self.recycleDigit(digit)
+                        }
                         
                         //add new digit
                         let d = requestDigit(char)
@@ -165,7 +168,9 @@ class SteprNumber : UIView {
                 let digit = currentDigits[i]
                 currentDigits.removeAtIndex(i)
                 
-                digit.hideAnimation(animationType)
+                digit.hideAnimation(animationType) {
+                    self.recycleDigit(digit)
+                }
                 
             }
         }
@@ -179,10 +184,28 @@ class SteprNumber : UIView {
         
         var digit : SteprDigit
         
-        digit = SteprDigit()
+        if digitPool.count > 0 {
+            digit = digitPool[0]
+            digitPool.removeAtIndex(0)
+        } else {
+            digit = SteprDigit()
+        }
+        
+        
         digit.text = String(digitChar)
         
+        print("requested...    active:\(currentDigits.count)  recycled:\(digitPool.count)")
+        
         return digit
+    }
+    
+    private func recycleDigit (digit : SteprDigit) {
+        
+        digit.removeFromSuperview()
+        digitPool.append(digit)
+        
+        
+        print("recycled...    active:\(currentDigits.count)  recycled:\(digitPool.count)")
     }
     
     

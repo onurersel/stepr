@@ -89,7 +89,7 @@ class SteprDigit : UIView {
     }
     
     
-    func hideAnimation (type : Stepr.AnimationType) {
+    func hideAnimation (type : Stepr.AnimationType, completeCallback : ((Void)->Void)) {
         
         switch type {
             
@@ -100,8 +100,6 @@ class SteprDigit : UIView {
             anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
                 self.label!.frame.origin.y = SteprDigit.distance
             }
-            
-            
             
         case .ToUp:
             
@@ -118,9 +116,12 @@ class SteprDigit : UIView {
         
         //fade out
         self.alpha = 1
-        anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
+        anim(duration: SteprDigit.duration, easing: Ease.QuintOut, animation: {
             self.alpha = 0
-        }
+        }, completion: { finished in
+            completeCallback()
+        })
+        
     }
     
     
