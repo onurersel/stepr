@@ -42,10 +42,19 @@ public class Stepr : UIView {
     
     public var currentNumber : Int {
         get {
-            if let n = number, let cn = n.currentNumber {
+            if let cn = number!.currentNumber {
                 return cn
             } else {
                 return 0
+            }
+        }
+        set (v) {
+            if let ll = lowerLimit {
+                assert(ll <= v, "Your setted current number should be bigger than lower limit")
+            } else if let ul = upperLimit {
+                assert(ul >= v, "Your setted current number should be smaller than upper limit")
+            } else {
+                number?.updateCurrentItem(v)
             }
         }
     }
@@ -73,27 +82,76 @@ public class Stepr : UIView {
         }
     }
     
+    public var dataArray : [AnyObject]? {
+        get {
+            return number!.dataArray
+        }
+        set (v) {
+            if let d = v {
+                lowerLimit = 0
+                upperLimit = d.count-1
+                number?.dataArray = d
+            } else {
+                lowerLimit = nil
+                upperLimit = nil
+                number?.dataArray = nil
+            }
+            
+            updateStatesWithLimits()
+        }
+    }
+    
+    public var adjustsFontSizeToFitWidth : Bool {
+        get {
+            return number!.adjustsFontSizeToFitWidth
+        }
+        set (v) {
+            number!.adjustsFontSizeToFitWidth = v
+        }
+    }
+    
+    public var font : UIFont {
+        get {
+            return number!.font
+        }
+        set (v) {
+            number!.font = v
+        }
+    }
+    
+    public var textColor : UIColor {
+        get {
+            return number!.textColor
+        }
+        set (v) {
+            number!.textColor = v
+        }
+    }
+    
+    
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         prepare()
     }
     
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         prepare()
     }
     
     
-    
     convenience init (alignment : ButtonAlignment) {
+        self.init(alignment: alignment, data : nil)
+    }
+    convenience init (alignment : ButtonAlignment, data : [AnyObject]?) {
         self.init(frame: CGRect.zero)
         buttonAlignment = alignment
+        dataArray = data
     }
+    
     
     private func prepare () {
         

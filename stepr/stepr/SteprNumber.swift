@@ -11,7 +11,6 @@ import anim
 
 class SteprNumber : UIView {
     
-    var dataArray : [AnyObject]?
     var currentNumber : Int?
     var numberChangeCallback : ((number : Int)->Void)?
     
@@ -19,6 +18,7 @@ class SteprNumber : UIView {
     private var currentDigits = [SteprDigit]()
     private var digitPool = [SteprDigit]()
     private var _adjustsFontSizeToFitWidth : Bool = false
+    private var _dataArray : [AnyObject]?
     
     var adjustsFontSizeToFitWidth : Bool {
         get {
@@ -64,17 +64,28 @@ class SteprNumber : UIView {
         }
     }
     
+    var dataArray : [AnyObject]? {
+        get {
+            return _dataArray
+        }
+        set (v) {
+            _dataArray = v
+            resetItems()
+            updateCurrentItem(0)
+        }
+    }
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         prepare()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         prepare()
     }
+    
     
     
     private func prepare () {
@@ -83,7 +94,7 @@ class SteprNumber : UIView {
         digitContainer = UIView()
         self.addSubview(digitContainer!)
         
-        placeNumber(0)
+        updateCurrentItem(0)
     }
     
     
@@ -99,9 +110,18 @@ class SteprNumber : UIView {
         }
     }
     func changeNumber (number : Int) {
-        placeNumber(number)
-        
+        updateCurrentItem(number)
         numberChangeCallback?(number: number)
+    }
+    
+    
+    
+    func updateCurrentItem (i : Int) {
+        if dataArray == nil {
+            placeNumber(i)
+        } else {
+            placeData(i)
+        }
     }
     
     
@@ -136,7 +156,7 @@ class SteprNumber : UIView {
                 
                 //if dont have enough digits
                 if currentDigits.count <= i {
-                    let digit = requestDigit(char)
+                    let digit = requestDigit(String(char))
                     digitContainer!.addSubview(digit)
                     currentDigits.append(digit)
                     digit.showAnimation(animationType)
@@ -155,7 +175,7 @@ class SteprNumber : UIView {
                         }
                         
                         //add new digit
-                        let d = requestDigit(char)
+                        let d = requestDigit(String(char))
                         digitContainer!.addSubview(d)
                         currentDigits.insert(d, atIndex: i)
                         
@@ -181,7 +201,92 @@ class SteprNumber : UIView {
         currentNumber = num
     }
     
-    private func requestDigit (digitChar : Character) -> SteprDigit {
+    private func placeData (index : Int) {
+        
+        //don't place same indices
+        if currentNumber == index {
+            return
+        }
+        
+        //there should be data
+        if dataArray == nil {
+            return
+        }
+        
+        //index can't be bigger than data or smaller than 0
+        if index >= dataArray!.count  ||  index < 0 {
+            return
+        }
+        
+        //setting animation type
+        var animationType : Stepr.AnimationType
+        if let cn = currentNumber {
+            if cn < index {
+                animationType = Stepr.AnimationType.ToDown
+            } else {
+                animationType = Stepr.AnimationType.ToUp
+            }
+        } else {
+            animationType = Stepr.AnimationType.FadeIn
+        }
+        
+        //string to display
+        let str = String(dataArray![index])
+        
+        //show item for the first time
+        if currentDigits.count == 0 {
+            let digit = requestDigit(str)
+            digitContainer!.addSubview(digit)
+            currentDigits.append(digit)
+            digit.showAnimation(animationType)
+        } else {
+            
+            //remove old item
+            let digit = currentDigits[0]
+            currentDigits.removeAtIndex(0)
+            digit.hideAnimation(animationType) {
+                self.recycleDigit(digit)
+            }
+            
+            //add new item
+            let d = requestDigit(str)
+            digitContainer!.addSubview(d)
+            currentDigits.append(d)
+            
+            d.showAnimation(animationType)
+        }
+        
+        
+        placeDigits(animate: true)
+        currentNumber = index
+    }
+    
+    
+    private func resetItems () {
+        
+        for d in currentDigits {
+            d.removeFromSuperview()
+        }
+        
+        currentDigits.removeAll()
+        digitPool.removeAll()
+        
+        currentNumber = nil
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private func requestDigit (digitStr : String) -> SteprDigit {
         
         var digit : SteprDigit
         
@@ -192,8 +297,8 @@ class SteprNumber : UIView {
             digit = SteprDigit()
         }
         
-        
-        digit.text = String(digitChar)
+        resetDigitTransform(digit)
+        digit.text = digitStr
         
         return digit
     }
@@ -209,6 +314,29 @@ class SteprNumber : UIView {
     
     
     private func placeDigits (animate doAnimate : Bool) {
+        
+        //if data is available, place everything to middle
+        if dataArray != nil {
+            
+            resetContainerTransform()
+            
+            for d in currentDigits {
+                resetDigitTransform(d)
+                d.frame.origin.x = -d.frame.size.width/2.0
+                applyDigitTransform(d)
+            }
+            
+            let firstDigit = currentDigits.first!
+            let str = NSString(string: firstDigit.text)
+            
+            let size = str.sizeWithAttributes([NSFontAttributeName:SteprDigit.font])
+            
+            self.digitContainer!.frame.origin.x = self.frame.size.width/2.0
+            self.digitContainer!.frame.origin.y = self.frame.size.height/2.0 - size.height/2.0
+            
+            return
+        }
+        
         
         //abort if there's no digits
         if currentDigits.count == 0 {
@@ -233,7 +361,7 @@ class SteprNumber : UIView {
         //align container
         if currentNumber != nil  &&  doAnimate {
             
-            anim(duration:SteprDigit.duration*1.5, easing: Ease.ExpoOut) {
+            anim(duration:SteprDigit.duration, easing: Ease.ExpoOut) {
                 self.digitContainer!.frame.origin.x = self.frame.size.width/2.0 - x/2.0
                 self.digitContainer!.frame.origin.y = self.frame.size.height/2.0 - self.currentDigits[0].frame.size.height/2.0
             }
@@ -267,6 +395,20 @@ class SteprNumber : UIView {
                 }
             }
         }
+    }
+    private func applyDigitTransform (digit : SteprDigit) {
+        if _adjustsFontSizeToFitWidth {
+            
+            //apply transform
+            let ratio = self.frame.size.width / digit.frame.size.width
+            print("\(self.frame.size.width)  \(digit.frame.size.width)")
+            if ratio < 1  &&  ratio > 0 {
+                digit.transform = CGAffineTransformMakeScale(ratio, ratio)
+            }
+        }
+    }
+    private func resetDigitTransform (digit : SteprDigit) {
+        digit.transform = CGAffineTransformIdentity
     }
     
     
