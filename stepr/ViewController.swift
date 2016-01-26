@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SteprDelegate {
 
     var s : Stepr?
     
@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         
         s = Stepr(alignment: .Vertical)
+        s!.delegate = self
         s!.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(s!)
         
@@ -34,7 +35,8 @@ class ViewController: UIViewController {
         self.view.addConstraint(c)
         c = NSLayoutConstraint(item: s!, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute:.Top , multiplier: 1, constant: 50)
         self.view.addConstraint(c)
-
+        
+        
         
     }
 
@@ -44,5 +46,11 @@ class ViewController: UIViewController {
     }
 
 
+    
+    
+    
+    
+    
+    
 }
 

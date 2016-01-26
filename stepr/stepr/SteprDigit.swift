@@ -58,7 +58,7 @@ class SteprDigit : UIView {
         
         switch type {
             
-        case .ToUp:
+        case .ToDown:
             
             //number is bigger, fade in from below
             self.label!.frame.origin.y = -SteprDigit.distance
@@ -67,7 +67,7 @@ class SteprDigit : UIView {
             }
             
             
-        case .ToDown:
+        case .ToUp:
             
             //number is smaller, fade in from above
             self.label!.frame.origin.y = SteprDigit.distance
@@ -93,7 +93,7 @@ class SteprDigit : UIView {
         
         switch type {
             
-        case .ToUp:
+        case .ToDown:
             
             //number is bigger, fade out to above
             self.label!.frame.origin.y = 0
@@ -103,7 +103,7 @@ class SteprDigit : UIView {
             
             
             
-        case .ToDown:
+        case .ToUp:
             
             //number is smaller, fade out to below
             self.label!.frame.origin.y = 0

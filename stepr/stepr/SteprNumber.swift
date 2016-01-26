@@ -12,6 +12,7 @@ import anim
 class SteprNumber : UIView {
     
     var currentNumber : Int?
+    var numberChangeCallback : ((number : Int)->Void)?
     
     private var digitContainer : UIView?
     private var currentDigits = [SteprDigit]()
@@ -97,6 +98,8 @@ class SteprNumber : UIView {
     }
     func changeNumber (number : Int) {
         placeNumber(number)
+        
+        numberChangeCallback?(number: number)
     }
     
     

@@ -6,7 +6,15 @@
 //  Copyright © 2016 Onur Ersel. All rights reserved.
 //
 
+import Foundation
 import UIKit
+
+
+@objc public protocol SteprDelegate : NSObjectProtocol, UIScrollViewDelegate {
+    optional func numberChanged (number : Int)
+}
+
+
 
 public class Stepr : UIView {
     
@@ -21,12 +29,26 @@ public class Stepr : UIView {
     }
 
     
-    
+    public var delegate : SteprDelegate?
+    public var numberChangeCallback : ((number : Int)->Void)?
     
     private var number : SteprNumber?
     private var buttonAdd : UIButton?
     private var buttonRemove : UIButton?
     private var buttonAlignment : ButtonAlignment = .Vertical
+    
+    
+    public var currentNumber : Int {
+        get {
+            if let n = number, let cn = n.currentNumber {
+                return cn
+            } else {
+                return 0
+            }
+        }
+    }
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,6 +89,9 @@ public class Stepr : UIView {
         buttonRemove?.setImage(UIImage(named: "arrow-down"), forState: .Normal)
         buttonRemove?.sizeToFit()
         buttonRemove?.addTarget(self, action: "removeHandler", forControlEvents: .TouchUpInside)
+        
+        //number change callback
+        number!.numberChangeCallback = numberChangedHandler
     }
     
     
@@ -109,6 +134,15 @@ public class Stepr : UIView {
         number?.removeNumber()
     }
     
+    private func numberChangedHandler (number : Int) {
+        
+        delegate?.numberChanged?(number)
+        
+        numberChangeCallback?(number: number)
+        
+    }
+    
     
     
 }
+
