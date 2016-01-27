@@ -22,25 +22,11 @@ class ViewController: UIViewController, SteprDelegate {
         
         
         steprNumbers = Stepr(alignment: .Vertical)
-        //steprNumbers!.upperLimit = 140
-        //steprNumbers!.lowerLimit = 80
-        //steprNumbers!.currentNumber = 100
+        steprNumbers!.upperLimit = 140
+        steprNumbers!.lowerLimit = 80
+        steprNumbers!.currentNumber = 100
         steprNumbers!.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(steprNumbers!)
-        
-        
-        let up = UIButton()
-        up.setImage(UIImage(named: "plus"), forState: .Normal)
-        let down = UIButton()
-        down.setImage(UIImage(named: "minus"), forState: .Normal)
-        
-        steprNumbers?.buttonAlignment = Stepr.ButtonAlignment.Horizontal
-        steprNumbers?.buttonAdd = up
-        steprNumbers?.buttonRemove = down
-        
-        
-        
-        steprNumbers?.dataArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         
         c = NSLayoutConstraint(item: steprNumbers!, attribute: .Width, relatedBy: .Equal, toItem: self.view, attribute:.Width , multiplier: 0.7, constant: 0)
         self.view.addConstraint(c)
