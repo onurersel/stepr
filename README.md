@@ -1,5 +1,4 @@
 # stepr
----
 A stepper input library with cool animations.
 
 ![](https://github.com/onurersel/stepr/raw/master/screenshots/stepr-vertical-numbers.gif)
@@ -13,6 +12,9 @@ Easiest way to implement stepr to your project is via CocoaPods. Add this line t
 
 #### Manual
 Copy contents of stepr/stepr and stepr/images folders to your project. This library requires another library called [anim](https://github.com/onurersel/anim), so you have to implement it as well.
+
+
+![](https://github.com/onurersel/stepr/raw/master/screenshots/stepr-horizontal-months.gif)
 
 
 ## How To Use
@@ -68,8 +70,6 @@ You can supply your own data array into stepr. It will display string representa
 
 	// this will create a month stepper
 	stepr.dataArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
-![](https://github.com/onurersel/stepr/raw/master/screenshots/stepr-horizontal-months.gif)
 
 ##### Button Alignment
 You can align buttons horizontally or vertically.
