@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
 
   s.source_files = 'stepr/stepr/*.swift'
-  s.resource = 'stepr/steprdefault.xcassets'
+  s.resource_bundles = { 'SteprBundle' => ['stepr/steprdefault.xcassets'] }
 
   s.requires_arc = true
   s.dependency "anim", "~> 0.0.7"
