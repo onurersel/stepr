@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'stepr'
-  s.version = '0.0.1'
+  s.version = '0.0.2'
   s.license = 'MIT'
   s.summary = 'A stepper input library with cool animations.'
   s.homepage = 'https://github.com/onurersel/stepr'
