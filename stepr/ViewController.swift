@@ -38,13 +38,37 @@ class ViewController: UIViewController, SteprDelegate {
         self.view.addConstraint(c)
         
         
-        //NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "test", userInfo: nil, repeats: false)
+        
+        
+        let s2 = Stepr()
+        s2.textColor = UIColor.redColor()
+        s2.font = UIFont(name: "FiraCode-Medium", size: 32)!
+        s2.adjustsFontSizeToFitWidth = true
+        self.view.addSubview(s2)
+        s2.frame = CGRect(x: 150, y: 100, width: 100, height: 200)
+        
+        s2.currentNumber = 1684
+        
+        
+        
+        
+        
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "test", userInfo: nil, repeats: false)
     }
 
 
     @objc func test () {
         let months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
         s!.dataArray = months
+        
+        
+        let btnAdd = UIButton()
+        btnAdd.setImage(UIImage(named: "up-temp"), forState: .Normal)
+        s!.buttonAdd = btnAdd
+        
+        let btnRemove = UIButton()
+        btnRemove.setImage(UIImage(named: "down-temp"), forState: .Normal)
+        s!.buttonRemove = btnRemove
     }
 
     override func didReceiveMemoryWarning() {

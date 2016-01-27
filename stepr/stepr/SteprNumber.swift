@@ -19,6 +19,8 @@ class SteprNumber : UIView {
     private var digitPool = [SteprDigit]()
     private var _adjustsFontSizeToFitWidth : Bool = false
     private var _dataArray : [AnyObject]?
+    private var _font : UIFont = UIFont.systemFontOfSize(64)
+    private var _textColor : UIColor = UIColor(white: 0.81, alpha: 1)
     
     var adjustsFontSizeToFitWidth : Bool {
         get {
@@ -34,11 +36,11 @@ class SteprNumber : UIView {
     
     var font : UIFont {
         get {
-            return SteprDigit.font
+            return _font
         }
         set (f) {
             
-            SteprDigit.font = f
+            _font = f
             
             for digit in currentDigits {
                 digit.updateFont(f)
@@ -52,11 +54,11 @@ class SteprNumber : UIView {
     
     var textColor : UIColor {
         get {
-            return SteprDigit.textColor
+            return _textColor
         }
         set (c) {
             
-            SteprDigit.textColor = c
+            _textColor = c
             
             for digit in currentDigits {
                 digit.updateTextColor(c)
@@ -294,7 +296,7 @@ class SteprNumber : UIView {
             digit = digitPool[0]
             digitPool.removeAtIndex(0)
         } else {
-            digit = SteprDigit()
+            digit = SteprDigit(font: font, textColor: textColor)
         }
         
         resetDigitTransform(digit)
@@ -329,7 +331,7 @@ class SteprNumber : UIView {
             let firstDigit = currentDigits.first!
             let str = NSString(string: firstDigit.text)
             
-            let size = str.sizeWithAttributes([NSFontAttributeName:SteprDigit.font])
+            let size = str.sizeWithAttributes([NSFontAttributeName:font])
             
             self.digitContainer!.frame.origin.x = self.frame.size.width/2.0
             self.digitContainer!.frame.origin.y = self.frame.size.height/2.0 - size.height/2.0

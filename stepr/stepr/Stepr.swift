@@ -19,6 +19,13 @@ import UIKit
 public class Stepr : UIView {
     
     
+    
+    /*****************************
+     */
+     //MARK: enums
+     /*
+     *****************************/
+    
     public enum ButtonAlignment {
         case Horizontal, Vertical
     }
@@ -29,15 +36,69 @@ public class Stepr : UIView {
     }
 
     
+    /*****************************
+     */
+     //MARK: properties
+     /*
+     *****************************/
+    
     public var delegate : SteprDelegate?
     public var numberChangeCallback : ((number : Int)->Void)?
     
     private var number : SteprNumber?
-    private var buttonAdd : UIButton?
-    private var buttonRemove : UIButton?
-    private var buttonAlignment : ButtonAlignment = .Vertical
+    private var _buttonAlignment : ButtonAlignment = .Vertical
     private var _upperLimit : Int?
     private var _lowerLimit : Int?
+    private var _buttonAdd : UIButton?
+    private var _buttonRemove : UIButton?
+    
+    
+    public var buttonAdd : UIButton? {
+        get {
+            return _buttonAdd
+        }
+        set (v) {
+            if let btn = _buttonAdd {
+                btn.removeTarget(self, action: "addHandler", forControlEvents: .TouchUpInside)
+                btn.removeFromSuperview()
+            }
+            
+            _buttonAdd = v
+            
+            if let btn = _buttonAdd {
+                self.addSubview(btn)
+                btn.sizeToFit()
+                btn.addTarget(self, action: "addHandler", forControlEvents: .TouchUpInside)
+            }
+            
+            setNeedsLayout()
+            layoutIfNeeded()
+        }
+    }
+    
+    
+    public var buttonRemove : UIButton? {
+        get {
+            return _buttonRemove
+        }
+        set (v) {
+            if let btn = _buttonRemove {
+                btn.removeTarget(self, action: "removeHandler", forControlEvents: .TouchUpInside)
+                btn.removeFromSuperview()
+            }
+            
+            _buttonRemove = v
+            
+            if let btn = _buttonRemove {
+                self.addSubview(btn)
+                btn.sizeToFit()
+                btn.addTarget(self, action: "removeHandler", forControlEvents: .TouchUpInside)
+            }
+            
+            setNeedsLayout()
+            layoutIfNeeded()
+        }
+    }
     
     
     public var currentNumber : Int {
@@ -128,6 +189,18 @@ public class Stepr : UIView {
         }
     }
     
+    public var buttonAlignment : Stepr.ButtonAlignment {
+        get {
+            return _buttonAlignment
+        }
+        set (v) {
+            _buttonAlignment = v
+            
+            setNeedsLayout()
+            layoutIfNeeded()
+        }
+    }
+    
     
     
     
@@ -148,7 +221,7 @@ public class Stepr : UIView {
     }
     convenience init (alignment : ButtonAlignment, data : [AnyObject]?) {
         self.init(frame: CGRect.zero)
-        buttonAlignment = alignment
+        _buttonAlignment = alignment
         dataArray = data
     }
     
@@ -160,30 +233,25 @@ public class Stepr : UIView {
         self.addSubview(number!)
         
         //button add
-        buttonAdd = UIButton()
-        self.addSubview(buttonAdd!)
-        buttonAdd?.setImage(UIImage(named: "arrow-up"), forState: .Normal)
-        buttonAdd?.sizeToFit()
-        buttonAdd?.addTarget(self, action: "addHandler", forControlEvents: .TouchUpInside)
+        let btnAdd = UIButton()
+        btnAdd.setImage(UIImage(named:"arrow-up"), forState: .Normal)
+        buttonAdd = btnAdd
         
         //button remove
-        buttonRemove = UIButton()
-        self.addSubview(buttonRemove!)
-        buttonRemove?.setImage(UIImage(named: "arrow-down"), forState: .Normal)
-        buttonRemove?.sizeToFit()
-        buttonRemove?.addTarget(self, action: "removeHandler", forControlEvents: .TouchUpInside)
+        let btnRemove = UIButton()
+        btnRemove.setImage(UIImage(named:"arrow-down"), forState: .Normal)
+        buttonRemove = btnRemove
         
         //number change callback
         number!.numberChangeCallback = numberChangedHandler
     }
     
     
-    
     override public func layoutSubviews() {
         number?.frame.size.width = self.frame.size.width
         number?.frame.size.height = self.frame.size.height
         
-        switch buttonAlignment {
+        switch _buttonAlignment {
         case .Vertical:
             buttonAdd?.frame.origin.x = self.frame.size.width/2.0 - buttonAdd!.frame.size.width/2.0
             buttonAdd?.frame.origin.y = 0
@@ -203,7 +271,6 @@ public class Stepr : UIView {
     }
     
     private func updateStatesWithLimits() {
-        
         if let cn = number?.currentNumber {
             
             //lower limit
@@ -223,6 +290,7 @@ public class Stepr : UIView {
                 
             }
             
+            //upper limit
             if let ul = upperLimit {
                 
                 //fit number in upper limit
@@ -240,10 +308,6 @@ public class Stepr : UIView {
             }
             
         }
-        
-        
-        
-        
     }
     
     /*****************************

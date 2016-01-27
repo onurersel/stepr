@@ -14,8 +14,9 @@ class SteprDigit : UIView {
     static let distance : CGFloat = 50
     static let duration : NSTimeInterval = 0.26
     static let showDelay : NSTimeInterval = 0.06
-    static var font : UIFont = UIFont.systemFontOfSize(64)
-    static var textColor : UIColor = UIColor(white: 0.81, alpha: 1)
+    
+    private var font : UIFont?
+    private var textColor : UIColor?
     
     var label : UILabel?
     
@@ -26,8 +27,8 @@ class SteprDigit : UIView {
         set (digitString){
             if label == nil {
                 label = UILabel()
-                label!.textColor = SteprDigit.textColor
-                label!.font = SteprDigit.font
+                label!.textColor = textColor
+                label!.font = font
                 
                 self.addSubview(label!)
             }
@@ -35,6 +36,14 @@ class SteprDigit : UIView {
             label!.text = digitString
             fit()
         }
+    }
+    
+    
+    
+    convenience init (font : UIFont, textColor : UIColor) {
+        self.init()
+        self.font = font
+        self.textColor = textColor
     }
     
     
