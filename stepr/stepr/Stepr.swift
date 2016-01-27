@@ -306,10 +306,10 @@ public class Stepr : UIView {
             buttonRemove?.frame.origin.y = self.frame.size.height - buttonRemove!.frame.size.height
             
         case .Horizontal:
-            buttonAdd?.frame.origin.x = 0
-            buttonAdd?.frame.origin.y = self.frame.size.height/2.0 - buttonAdd!.frame.size.height/2.0
-            buttonRemove?.frame.origin.x = self.frame.size.width - buttonRemove!.frame.size.width
-            buttonRemove?.frame.origin.y = self.frame.size.height/2.0 - buttonRemove!.frame.size.height/2.0
+            buttonRemove?.frame.origin.x = 0
+            buttonRemove?.frame.origin.y = self.frame.size.height/2.0 - buttonAdd!.frame.size.height/2.0
+            buttonAdd?.frame.origin.x = self.frame.size.width - buttonRemove!.frame.size.width
+            buttonAdd?.frame.origin.y = self.frame.size.height/2.0 - buttonRemove!.frame.size.height/2.0
         }
         
 
