@@ -11,6 +11,13 @@ import anim
 
 class SteprNumber : UIView {
     
+    
+    /*****************************
+     */
+     //MARK: properties
+     /*
+     *****************************/
+    
     var currentNumber : Int?
     var numberChangeCallback : ((number : Int)->Void)?
     
@@ -21,6 +28,15 @@ class SteprNumber : UIView {
     private var _dataArray : [AnyObject]?
     private var _font : UIFont = UIFont.systemFontOfSize(64)
     private var _textColor : UIColor = UIColor(white: 0.81, alpha: 1)
+    
+    
+    
+    /*****************************
+     */
+     //MARK: getter / setter
+     /*
+     *****************************/
+    
     
     var adjustsFontSizeToFitWidth : Bool {
         get {
@@ -43,7 +59,7 @@ class SteprNumber : UIView {
             _font = f
             
             for digit in currentDigits {
-                digit.updateFont(f)
+                digit.font = f
             }
             
             placeDigits(animate: false)
@@ -61,7 +77,7 @@ class SteprNumber : UIView {
             _textColor = c
             
             for digit in currentDigits {
-                digit.updateTextColor(c)
+                digit.textColor = c
             }
         }
     }
@@ -77,6 +93,12 @@ class SteprNumber : UIView {
         }
     }
     
+    
+    /*****************************
+     */
+     //MARK: init / prepare
+     /*
+     *****************************/
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -101,6 +123,13 @@ class SteprNumber : UIView {
     
     
     
+    /*****************************
+     */
+     //MARK: controls
+     /*
+     *****************************/
+    
+    
     func increase () {
         if let cn = currentNumber {
             changeNumber(cn+1)
@@ -116,8 +145,6 @@ class SteprNumber : UIView {
         numberChangeCallback?(number: number)
     }
     
-    
-    
     func updateCurrentItem (i : Int) {
         if dataArray == nil {
             placeNumber(i)
@@ -125,6 +152,13 @@ class SteprNumber : UIView {
             placeData(i)
         }
     }
+    
+    
+    /*****************************
+     */
+     //MARK: display items
+     /*
+     *****************************/
     
     
     private func placeNumber (num : Int) {
@@ -279,14 +313,11 @@ class SteprNumber : UIView {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
+    /*****************************
+     */
+     //MARK: digit factory
+     /*
+     *****************************/
     
     private func requestDigit (digitStr : String) -> SteprDigit {
         
@@ -313,7 +344,11 @@ class SteprNumber : UIView {
     }
     
     
-    
+    /*****************************
+     */
+     //MARK: layout
+     /*
+     *****************************/
     
     private func placeDigits (animate doAnimate : Bool) {
         
@@ -377,6 +412,9 @@ class SteprNumber : UIView {
         applyContainerTransform()
     }
     
+    
+    
+    // container transform
     private func resetContainerTransform () {
         digitContainer?.transform = CGAffineTransformIdentity
     }
@@ -398,6 +436,9 @@ class SteprNumber : UIView {
             }
         }
     }
+    
+    
+    // digit transform
     private func applyDigitTransform (digit : SteprDigit) {
         if _adjustsFontSizeToFitWidth {
             
@@ -414,8 +455,7 @@ class SteprNumber : UIView {
     }
     
     
-    
-    
+    // layout override
     override func layoutSubviews() {
         super.layoutSubviews()
         

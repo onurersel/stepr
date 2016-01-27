@@ -11,14 +11,33 @@ import anim
 
 class SteprDigit : UIView {
     
+    /*****************************
+     */
+     //MARK: constants
+     /*
+     *****************************/
+    
     static let distance : CGFloat = 50
     static let duration : NSTimeInterval = 0.26
     static let showDelay : NSTimeInterval = 0.06
     
-    private var font : UIFont?
-    private var textColor : UIColor?
+    /*****************************
+     */
+     //MARK: properties
+     /*
+     *****************************/
     
-    var label : UILabel?
+    private var label : UILabel?
+    private var _font : UIFont?
+    private var _textColor : UIColor?
+    
+    
+    
+    /*****************************
+     */
+     //MARK: getter/setter
+     /*
+     *****************************/
     
     var text : String {
         get {
@@ -38,6 +57,34 @@ class SteprDigit : UIView {
         }
     }
     
+    var font : UIFont? {
+        get {
+            return _font
+        }
+        set (v) {
+            _font = v
+            label?.font = _font
+            fit()
+        }
+    }
+    
+    var textColor : UIColor? {
+        get {
+            return _textColor
+        }
+        set (v) {
+            _textColor = v
+            label?.textColor = _textColor
+        }
+    }
+    
+    
+    
+    /*****************************
+     */
+     //MARK: init / prepare
+     /*
+     *****************************/
     
     
     convenience init (font : UIFont, textColor : UIColor) {
@@ -47,21 +94,30 @@ class SteprDigit : UIView {
     }
     
     
+    
+    
+    
+    /*****************************
+     */
+     //MARK: layout
+     /*
+     *****************************/
+     
     func fit () {
-        label!.sizeToFit()
-        self.frame.size.width = label!.frame.size.width
-        self.frame.size.height = label!.frame.size.height
+        if let l = label {
+            l.sizeToFit()
+            self.frame.size.width = l.frame.size.width
+            self.frame.size.height = l.frame.size.height
+        }
     }
     
     
-    func updateFont (f : UIFont) {
-        label!.font = f
-        fit()
-    }
-    func updateTextColor (textColor : UIColor) {
-        label!.textColor = textColor
-    }
     
+    /*****************************
+     */
+     //MARK: animations
+     /*
+     *****************************/
     
     func showAnimation (type : Stepr.AnimationType) {
         

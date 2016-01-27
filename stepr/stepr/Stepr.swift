@@ -42,8 +42,9 @@ public class Stepr : UIView {
      /*
      *****************************/
     
+    
     public var delegate : SteprDelegate?
-    public var numberChangeCallback : ((number : Int)->Void)?
+    public var selectionChangeCallback : ((number : Int)->Void)?
     
     private var number : SteprNumber?
     private var _buttonAlignment : ButtonAlignment = .Vertical
@@ -53,6 +54,15 @@ public class Stepr : UIView {
     private var _buttonRemove : UIButton?
     
     
+    
+    /*****************************
+     */
+     //MARK: getters/setters
+     /*
+     *****************************/
+    
+    // button which increases selection 
+    // you can set your own custom UIButton for this
     public var buttonAdd : UIButton? {
         get {
             return _buttonAdd
@@ -71,12 +81,16 @@ public class Stepr : UIView {
                 btn.addTarget(self, action: "addHandler", forControlEvents: .TouchUpInside)
             }
             
+            updateStatesWithLimits()
+            
             setNeedsLayout()
             layoutIfNeeded()
         }
     }
     
     
+    // button which decreases selection
+    // you can set your own custom UIButton for this
     public var buttonRemove : UIButton? {
         get {
             return _buttonRemove
@@ -95,12 +109,15 @@ public class Stepr : UIView {
                 btn.addTarget(self, action: "removeHandler", forControlEvents: .TouchUpInside)
             }
             
+            updateStatesWithLimits()
+            
             setNeedsLayout()
             layoutIfNeeded()
         }
     }
     
     
+    // current selected number (or index, if stepr uses custom data)
     public var currentNumber : Int {
         get {
             if let cn = number!.currentNumber {
@@ -110,16 +127,33 @@ public class Stepr : UIView {
             }
         }
         set (v) {
-            if let ll = lowerLimit {
-                assert(ll <= v, "Your setted current number should be bigger than lower limit")
-            } else if let ul = upperLimit {
-                assert(ul >= v, "Your setted current number should be smaller than upper limit")
+            
+            if let arr = dataArray {
+                if v < 0 {
+                    print("Can not set current number to a value lower than 0 while data array is defined. currentNumber:\(currentNumber)   setted number:\(v)")
+                    return
+                } else if v > arr.count-1 {
+                    print("Can not set current number to a value greater than dataArray.count-1 while data array is defined. currentNumber:\(currentNumber)   setted number:\(v)   dataArray.count:\(dataArray!.count)")
+                    return
+                }
             } else {
-                number?.updateCurrentItem(v)
+                if let ll = lowerLimit where ll > v {
+                    print("Can not set current number to a value lower than lowerLimit. currentNumber:\(currentNumber)   setted number:\(v)   lowerLimit:\(ll)")
+                    return
+                } else if let ul = upperLimit where ul < v  {
+                    print("Can not set current number to a value greater than upperLimit. currentNumber:\(currentNumber)   setted number:\(v)   upperLimit:\(ul)")
+                    return
+                }
             }
+            
+            number?.updateCurrentItem(v)
+            updateStatesWithLimits()
         }
     }
     
+    // you can set an upper and lower number (or index) limit
+    // current number will be adjusted to fit in limits after you define limits
+    // to remove limits, just nullify limit values
     public var upperLimit : Int? {
         get {
             return _upperLimit
@@ -143,25 +177,21 @@ public class Stepr : UIView {
         }
     }
     
+    
+    // you can assign a custom data array to stepr, and it displays its' value's String representation
+    // bounds of data array also acts as upper and lower limits
     public var dataArray : [AnyObject]? {
         get {
             return number!.dataArray
         }
         set (v) {
-            if let d = v {
-                lowerLimit = 0
-                upperLimit = d.count-1
-                number?.dataArray = d
-            } else {
-                lowerLimit = nil
-                upperLimit = nil
-                number?.dataArray = nil
-            }
-            
+            number?.dataArray = v
             updateStatesWithLimits()
         }
     }
     
+    
+    // fits text inside stepr's frame width
     public var adjustsFontSizeToFitWidth : Bool {
         get {
             return number!.adjustsFontSizeToFitWidth
@@ -171,6 +201,8 @@ public class Stepr : UIView {
         }
     }
     
+    
+    // change font
     public var font : UIFont {
         get {
             return number!.font
@@ -180,6 +212,8 @@ public class Stepr : UIView {
         }
     }
     
+    
+    // change text color (unfortunalety, this is not animatable)
     public var textColor : UIColor {
         get {
             return number!.textColor
@@ -189,6 +223,8 @@ public class Stepr : UIView {
         }
     }
     
+    
+    // you can display add/remove buttons vertically and horizontally
     public var buttonAlignment : Stepr.ButtonAlignment {
         get {
             return _buttonAlignment
@@ -203,6 +239,11 @@ public class Stepr : UIView {
     
     
     
+    /*****************************
+     */
+     //MARK: init & prepare
+     /*
+     *****************************/
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -247,6 +288,12 @@ public class Stepr : UIView {
     }
     
     
+    /*****************************
+     */
+     //MARK: layout
+     /*
+     *****************************/
+    
     override public func layoutSubviews() {
         number?.frame.size.width = self.frame.size.width
         number?.frame.size.height = self.frame.size.height
@@ -273,8 +320,11 @@ public class Stepr : UIView {
     private func updateStatesWithLimits() {
         if let cn = number?.currentNumber {
             
+            let lower : Int? = (dataArray != nil ? 0 : lowerLimit)
+            let upper : Int? = (dataArray != nil ? dataArray!.count-1 : upperLimit)
+            
             //lower limit
-            if let ll = lowerLimit {
+            if let ll = lower {
                 
                 //fit number in lower limit
                 if cn < ll {
@@ -291,7 +341,7 @@ public class Stepr : UIView {
             }
             
             //upper limit
-            if let ul = upperLimit {
+            if let ul = upper {
                 
                 //fit number in upper limit
                 if cn > ul {
@@ -330,7 +380,7 @@ public class Stepr : UIView {
         
         delegate?.numberChanged?(number)
         
-        numberChangeCallback?(number: number)
+        selectionChangeCallback?(number: number)
         
     }
     
