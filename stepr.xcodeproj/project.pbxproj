@@ -16,6 +16,7 @@
 		957BF1F01C5919580029116C /* steprdefault.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 957BF1EF1C5919580029116C /* steprdefault.xcassets */; };
 		957D4D081C5679B9005DD1B5 /* SteprDigit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D4D071C5679B9005DD1B5 /* SteprDigit.swift */; };
 		957D4D0C1C567B5E005DD1B5 /* Stepr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D4D0B1C567B5E005DD1B5 /* Stepr.swift */; };
+		958A1D731C592B70005C645A /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 958A1D721C592B70005C645A /* minus.png */; };
 		FC37344A673EB4C0F0647F80 /* Pods_stepr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D84F687B1BA72E552F27D9 /* Pods_stepr.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		957BF1EF1C5919580029116C /* steprdefault.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = steprdefault.xcassets; sourceTree = "<group>"; };
 		957D4D071C5679B9005DD1B5 /* SteprDigit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SteprDigit.swift; path = stepr/SteprDigit.swift; sourceTree = "<group>"; };
 		957D4D0B1C567B5E005DD1B5 /* Stepr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stepr.swift; path = stepr/Stepr.swift; sourceTree = "<group>"; };
+		958A1D721C592B70005C645A /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
 		A5635C6FA2F43E14AE3FFE55 /* Pods-stepr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stepr.release.xcconfig"; path = "Pods/Target Support Files/Pods-stepr/Pods-stepr.release.xcconfig"; sourceTree = "<group>"; };
 		BB7378527CF3198713338EDF /* Pods-stepr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stepr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-stepr/Pods-stepr.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,6 +80,7 @@
 		957A0DDD1C51095E0013DE6F /* stepr */ = {
 			isa = PBXGroup;
 			children = (
+				958A1D711C592B70005C645A /* images */,
 				957BF1EF1C5919580029116C /* steprdefault.xcassets */,
 				957A0DF01C51096D0013DE6F /* stepr */,
 				957A0DDE1C51095E0013DE6F /* AppDelegate.swift */,
@@ -98,6 +101,14 @@
 				957D4D0B1C567B5E005DD1B5 /* Stepr.swift */,
 			);
 			name = stepr;
+			sourceTree = "<group>";
+		};
+		958A1D711C592B70005C645A /* images */ = {
+			isa = PBXGroup;
+			children = (
+				958A1D721C592B70005C645A /* minus.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		A32B9E4BC91DEBE8F2EB4DA4 /* Frameworks */ = {
@@ -172,6 +183,7 @@
 				957A0DE91C51095E0013DE6F /* LaunchScreen.storyboard in Resources */,
 				957BF1F01C5919580029116C /* steprdefault.xcassets in Resources */,
 				957A0DE61C51095E0013DE6F /* Assets.xcassets in Resources */,
+				958A1D731C592B70005C645A /* minus.png in Resources */,
 				957A0DE41C51095E0013DE6F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
