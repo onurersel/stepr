@@ -275,16 +275,24 @@ public class Stepr : UIView {
         
         //button add
         let btnAdd = UIButton()
-        btnAdd.setImage(UIImage(named:"arrow-up"), forState: .Normal)
+        btnAdd.setImage(steprImageNamed("arrow-up"), forState: .Normal)
         buttonAdd = btnAdd
         
         //button remove
         let btnRemove = UIButton()
-        btnRemove.setImage(UIImage(named:"arrow-down"), forState: .Normal)
+        btnRemove.setImage(steprImageNamed("arrow-down"), forState: .Normal)
         buttonRemove = btnRemove
         
         //number change callback
         number!.numberChangeCallback = numberChangedHandler
+    }
+    
+    
+    private func steprImageNamed (name : String) -> UIImage {
+        let bundle = NSBundle(forClass: self.classForCoder)
+        let resourcePath = bundle.pathForResource(name, ofType: ".png")
+        
+        return UIImage(contentsOfFile: resourcePath!)!
     }
     
     
