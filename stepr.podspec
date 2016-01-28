@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name = 'stepr'
-  s.version = '0.0.4'
+  s.version = '0.0.5'
   s.license = 'MIT'
-  s.summary = 'A stepper input library with cool animations.'
+  s.summary = 'A stepper input library for iOS with cool animations.'
   s.homepage = 'https://github.com/onurersel/stepr'
   s.authors = { 'Onur Ersel' => 'onurersel@gmail.com' }
   s.source = { :git => 'https://github.com/onurersel/stepr.git', :tag => s.version }

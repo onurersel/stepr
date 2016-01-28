@@ -1,5 +1,5 @@
 # stepr
-A stepper input library with cool animations.
+A stepper input library for iOS with cool animations.
 
 ![](https://github.com/onurersel/stepr/raw/master/screenshots/stepr-vertical-numbers.gif)
 
