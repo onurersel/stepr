@@ -37,6 +37,7 @@ class ViewController: UIViewController, SteprDelegate {
         c = NSLayoutConstraint(item: steprNumbers!, attribute: .CenterY, relatedBy: .Equal, toItem: self.view, attribute:.CenterY , multiplier: 1, constant: 0)
         self.view.addConstraint(c)
         
+        
     }
 
     override func didReceiveMemoryWarning() {

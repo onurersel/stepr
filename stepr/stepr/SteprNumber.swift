@@ -185,7 +185,7 @@ class SteprNumber : UIView {
         let count = max(numStr.characters.count, currentDigits.count)
         
         
-        for var i = 0; i < count; ++i {
+        for i in 0 ..< count {
             
             if i < numStr.characters.count {
                 let char = numStr[numStr.startIndex.advancedBy(i)]

@@ -69,7 +69,7 @@ public class Stepr : UIView {
         }
         set (v) {
             if let btn = _buttonAdd {
-                btn.removeTarget(self, action: "addHandler", forControlEvents: .TouchUpInside)
+                btn.removeTarget(self, action: #selector(Stepr.addHandler), forControlEvents: .TouchUpInside)
                 btn.removeFromSuperview()
             }
             
@@ -78,7 +78,7 @@ public class Stepr : UIView {
             if let btn = _buttonAdd {
                 self.addSubview(btn)
                 btn.sizeToFit()
-                btn.addTarget(self, action: "addHandler", forControlEvents: .TouchUpInside)
+                btn.addTarget(self, action: #selector(Stepr.addHandler), forControlEvents: .TouchUpInside)
             }
             
             updateStatesWithLimits()
@@ -97,7 +97,7 @@ public class Stepr : UIView {
         }
         set (v) {
             if let btn = _buttonRemove {
-                btn.removeTarget(self, action: "removeHandler", forControlEvents: .TouchUpInside)
+                btn.removeTarget(self, action: #selector(Stepr.removeHandler), forControlEvents: .TouchUpInside)
                 btn.removeFromSuperview()
             }
             
@@ -106,7 +106,7 @@ public class Stepr : UIView {
             if let btn = _buttonRemove {
                 self.addSubview(btn)
                 btn.sizeToFit()
-                btn.addTarget(self, action: "removeHandler", forControlEvents: .TouchUpInside)
+                btn.addTarget(self, action: #selector(Stepr.removeHandler), forControlEvents: .TouchUpInside)
             }
             
             updateStatesWithLimits()
