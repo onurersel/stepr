@@ -29,6 +29,15 @@ class SteprNumber : UIView {
     private var _font : UIFont = UIFont.systemFontOfSize(64)
     private var _textColor : UIColor = UIColor(white: 0.81, alpha: 1)
     
+    private var _easeDigitFadeIn : Ease = Ease.QuintOut
+    private var _easeDigitFadeOut : Ease = Ease.QuintOut
+    private var _easeDigitChangeEnter : Ease = Ease.BackOut
+    private var _easeDigitChangeLeave : Ease = Ease.QuintOut
+    private var _easeHorizontalAlign : Ease = Ease.ExpoOut
+    
+    private var _easeDuration : NSTimeInterval = 0.26
+    private var _easeShowDelay : NSTimeInterval = 0.06
+    
     
     
     /*****************************
@@ -90,6 +99,104 @@ class SteprNumber : UIView {
             _dataArray = v
             resetItems()
             updateCurrentItem(0)
+        }
+    }
+    
+    var easeDigitFadeIn : Ease {
+        get {
+            return _easeDigitFadeIn
+        }
+        set (v) {
+            
+            _easeDigitFadeIn = v
+            
+            for digit in currentDigits {
+                digit.easeDigitFadeIn = v
+            }
+        }
+    }
+    
+    var easeDigitFadeOut : Ease {
+        get {
+            return _easeDigitFadeOut
+        }
+        set (v) {
+            
+            _easeDigitFadeOut = v
+            
+            for digit in currentDigits {
+                digit.easeDigitFadeOut = v
+            }
+        }
+    }
+    
+    var easeDigitChangeEnter : Ease {
+        get {
+            return _easeDigitChangeEnter
+        }
+        set (v) {
+            
+            _easeDigitChangeEnter = v
+            
+            for digit in currentDigits {
+                digit.easeDigitChangeEnter = v
+            }
+        }
+    }
+    
+    var easeDigitChangeLeave : Ease {
+        get {
+            return _easeDigitChangeLeave
+        }
+        set (v) {
+            
+            _easeDigitChangeLeave = v
+            
+            for digit in currentDigits {
+                digit.easeDigitChangeLeave = v
+            }
+        }
+    }
+    
+    var easeHorizontalAlign : Ease {
+        get {
+            return _easeHorizontalAlign
+        }
+        set (v) {
+            
+            _easeHorizontalAlign = v
+            
+            for digit in currentDigits {
+                digit.easeHorizontalAlign = v
+            }
+        }
+    }
+    
+    var easeDuration : NSTimeInterval {
+        get {
+            return _easeDuration
+        }
+        set (v) {
+            
+            _easeDuration = v
+            
+            for digit in currentDigits {
+                digit.easeDuration = v
+            }
+        }
+    }
+    
+    var easeShowDelay : NSTimeInterval {
+        get {
+            return _easeShowDelay
+        }
+        set (v) {
+            
+            _easeShowDelay = v
+            
+            for digit in currentDigits {
+                digit.easeShowDelay = v
+            }
         }
     }
     
@@ -327,7 +434,7 @@ class SteprNumber : UIView {
             digit = digitPool[0]
             digitPool.removeAtIndex(0)
         } else {
-            digit = SteprDigit(font: font, textColor: textColor)
+            digit = SteprDigit(font: font, textColor: textColor, easeDigitFadeIn: easeDigitFadeIn, easeDigitFadeOut: easeDigitFadeOut, easeDigitChangeEnter: easeDigitChangeEnter, easeDigitChangeLeave: easeDigitChangeLeave, easeHorizontalAlign: easeHorizontalAlign, easeDuration: easeDuration, easeShowDelay: easeShowDelay)
         }
         
         resetDigitTransform(digit)
@@ -398,7 +505,7 @@ class SteprNumber : UIView {
         //align container
         if currentNumber != nil  &&  doAnimate {
             
-            anim(duration:SteprDigit.duration, easing: Ease.ExpoOut) {
+            anim(duration:easeDuration, easing: easeHorizontalAlign) {
                 self.digitContainer!.frame.origin.x = self.frame.size.width/2.0 - x/2.0
                 self.digitContainer!.frame.origin.y = self.frame.size.height/2.0 - self.currentDigits[0].frame.size.height/2.0
             }

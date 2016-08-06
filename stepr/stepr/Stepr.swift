@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import anim
 
 
 @objc public protocol SteprDelegate : NSObjectProtocol, UIScrollViewDelegate {
@@ -18,6 +19,8 @@ import UIKit
 
 public class Stepr : UIView {
     
+    
+    public typealias Ease = anim.Ease
     
     
     /*****************************
@@ -42,7 +45,6 @@ public class Stepr : UIView {
      /*
      *****************************/
     
-    
     public var delegate : SteprDelegate?
     public var selectionChangeCallback : ((number : Int)->Void)?
     
@@ -52,7 +54,6 @@ public class Stepr : UIView {
     private var _lowerLimit : Int?
     private var _buttonAdd : UIButton?
     private var _buttonRemove : UIButton?
-    
     
     
     /*****************************
@@ -234,6 +235,80 @@ public class Stepr : UIView {
             
             setNeedsLayout()
             layoutIfNeeded()
+        }
+    }
+    
+
+    // ease type of digit fade in animation when it's appearing on screen
+    public var easeDigitFadeIn : Stepr.Ease {
+        get {
+            return number!.easeDigitFadeIn
+        }
+        set (v) {
+            number!.easeDigitFadeIn = v
+        }
+    }
+    
+    
+    // ease type of digit fade out animation when it's leaving screen
+    public var easeDigitFadeOut : Stepr.Ease {
+        get {
+            return number!.easeDigitFadeOut
+        }
+        set (v) {
+            number!.easeDigitFadeOut = v
+        }
+    }
+    
+    // ease type of digit movement animation when it's appearing on screen
+    public var easeDigitChangeEnter : Stepr.Ease {
+        get {
+            return number!.easeDigitChangeEnter
+        }
+        set (v) {
+            number!.easeDigitChangeEnter = v
+        }
+    }
+    
+    
+    // ease type of digit movement animation when it's leaving on screen
+    public var easeDigitChangeLeave : Stepr.Ease {
+        get {
+            return number!.easeDigitChangeLeave
+        }
+        set (v) {
+            number!.easeDigitChangeLeave = v
+        }
+    }
+    
+    
+    // ease type of digits' horizontal alignment.
+    public var easeHorizontalAlign : Stepr.Ease {
+        get {
+            return number!.easeHorizontalAlign
+        }
+        set (v) {
+            number!.easeHorizontalAlign = v
+        }
+    }
+    
+    // ease duration
+    public var easeDuration : NSTimeInterval {
+        get {
+            return number!.easeDuration
+        }
+        set (v) {
+            number!.easeDuration = v
+        }
+    }
+    
+    // delay value between a digit leaves screen and a new one enters.
+    public var easeShowDelay : NSTimeInterval {
+        get {
+            return number!.easeShowDelay
+        }
+        set (v) {
+            number!.easeShowDelay = v
         }
     }
     

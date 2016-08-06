@@ -18,8 +18,6 @@ class SteprDigit : UIView {
      *****************************/
     
     static let distance : CGFloat = 50
-    static let duration : NSTimeInterval = 0.26
-    static let showDelay : NSTimeInterval = 0.06
     
     /*****************************
      */
@@ -30,6 +28,15 @@ class SteprDigit : UIView {
     private var label : UILabel?
     private var _font : UIFont?
     private var _textColor : UIColor?
+    
+    internal var easeDigitFadeIn : Stepr.Ease?
+    internal var easeDigitFadeOut : Stepr.Ease?
+    internal var easeDigitChangeEnter : Stepr.Ease?
+    internal var easeDigitChangeLeave : Stepr.Ease?
+    internal var easeHorizontalAlign : Stepr.Ease?
+    
+    internal var easeDuration : NSTimeInterval?
+    internal var easeShowDelay : NSTimeInterval?
     
     
     
@@ -87,10 +94,19 @@ class SteprDigit : UIView {
      *****************************/
     
     
-    convenience init (font : UIFont, textColor : UIColor) {
+    convenience init (font : UIFont, textColor : UIColor, easeDigitFadeIn : Stepr.Ease, easeDigitFadeOut : Stepr.Ease, easeDigitChangeEnter : Stepr.Ease, easeDigitChangeLeave : Stepr.Ease, easeHorizontalAlign : Stepr.Ease, easeDuration : NSTimeInterval, easeShowDelay : NSTimeInterval) {
         self.init()
         self.font = font
         self.textColor = textColor
+        
+        self.easeDigitFadeIn = easeDigitFadeIn
+        self.easeDigitFadeOut = easeDigitFadeOut
+        self.easeDigitChangeEnter = easeDigitChangeEnter
+        self.easeDigitChangeLeave = easeDigitChangeLeave
+        self.easeHorizontalAlign = easeHorizontalAlign
+        
+        self.easeDuration = easeDuration
+        self.easeShowDelay = easeShowDelay
     }
     
     
@@ -127,7 +143,7 @@ class SteprDigit : UIView {
             
             //number is bigger, fade in from below
             self.label!.frame.origin.y = -SteprDigit.distance
-            anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.BackOut) {
+            anim(duration: easeDuration!, delay: easeShowDelay!, easing: easeDigitChangeEnter!) {
                 self.label!.frame.origin.y = 0
             }
             
@@ -136,7 +152,7 @@ class SteprDigit : UIView {
             
             //number is smaller, fade in from above
             self.label!.frame.origin.y = SteprDigit.distance
-            anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.BackOut) {
+            anim(duration: easeDuration!, delay: easeShowDelay!, easing: easeDigitChangeEnter!) {
                 self.label!.frame.origin.y = 0
             }
             
@@ -148,7 +164,7 @@ class SteprDigit : UIView {
         
         //fade in
         self.alpha = 0
-        anim(duration: SteprDigit.duration, delay: SteprDigit.showDelay, easing: Ease.QuintOut) {
+        anim(duration: easeDuration!, delay: easeShowDelay!, easing: easeDigitFadeIn!) {
             self.alpha = 1
         }
     }
@@ -162,7 +178,7 @@ class SteprDigit : UIView {
             
             //number is bigger, fade out to above
             self.label!.frame.origin.y = 0
-            anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
+            anim(duration: easeDuration!, easing: easeDigitChangeLeave!) {
                 self.label!.frame.origin.y = SteprDigit.distance
             }
             
@@ -170,7 +186,7 @@ class SteprDigit : UIView {
             
             //number is smaller, fade out to below
             self.label!.frame.origin.y = 0
-            anim(duration: SteprDigit.duration, easing: Ease.QuintOut) {
+            anim(duration: easeDuration!, easing: easeDigitChangeLeave!) {
                 self.label!.frame.origin.y = -SteprDigit.distance
             }
             
@@ -181,7 +197,7 @@ class SteprDigit : UIView {
         
         //fade out
         self.alpha = 1
-        anim(duration: SteprDigit.duration, easing: Ease.QuintOut, animation: {
+        anim(duration: easeDuration!, easing: easeDigitFadeOut!, animation: {
             self.alpha = 0
         }, completion: { finished in
             completeCallback()
