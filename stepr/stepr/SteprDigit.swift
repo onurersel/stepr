@@ -25,9 +25,9 @@ class SteprDigit : UIView {
      /*
      *****************************/
     
-    private var label : UILabel?
-    private var _font : UIFont?
-    private var _textColor : UIColor?
+    fileprivate var label : UILabel?
+    fileprivate var _font : UIFont?
+    fileprivate var _textColor : UIColor?
     
     internal var easeDigitFadeIn : Stepr.Ease?
     internal var easeDigitFadeOut : Stepr.Ease?
@@ -35,8 +35,8 @@ class SteprDigit : UIView {
     internal var easeDigitChangeLeave : Stepr.Ease?
     internal var easeHorizontalAlign : Stepr.Ease?
     
-    internal var easeDuration : NSTimeInterval?
-    internal var easeShowDelay : NSTimeInterval?
+    internal var easeDuration : TimeInterval?
+    internal var easeShowDelay : TimeInterval?
     
     
     
@@ -94,7 +94,7 @@ class SteprDigit : UIView {
      *****************************/
     
     
-    convenience init (font : UIFont, textColor : UIColor, easeDigitFadeIn : Stepr.Ease, easeDigitFadeOut : Stepr.Ease, easeDigitChangeEnter : Stepr.Ease, easeDigitChangeLeave : Stepr.Ease, easeHorizontalAlign : Stepr.Ease, easeDuration : NSTimeInterval, easeShowDelay : NSTimeInterval) {
+    convenience init (font : UIFont, textColor : UIColor, easeDigitFadeIn : Stepr.Ease, easeDigitFadeOut : Stepr.Ease, easeDigitChangeEnter : Stepr.Ease, easeDigitChangeLeave : Stepr.Ease, easeHorizontalAlign : Stepr.Ease, easeDuration : TimeInterval, easeShowDelay : TimeInterval) {
         self.init()
         self.font = font
         self.textColor = textColor
@@ -135,11 +135,11 @@ class SteprDigit : UIView {
      /*
      *****************************/
     
-    func showAnimation (type : Stepr.AnimationType) {
+    func showAnimation (_ type : Stepr.AnimationType) {
         
         switch type {
             
-        case .ToDown:
+        case .toDown:
             
             //number is bigger, fade in from below
             self.label!.frame.origin.y = -SteprDigit.distance
@@ -148,7 +148,7 @@ class SteprDigit : UIView {
             }
             
             
-        case .ToUp:
+        case .toUp:
             
             //number is smaller, fade in from above
             self.label!.frame.origin.y = SteprDigit.distance
@@ -170,11 +170,11 @@ class SteprDigit : UIView {
     }
     
     
-    func hideAnimation (type : Stepr.AnimationType, completeCallback : ((Void)->Void)) {
+    func hideAnimation (_ type : Stepr.AnimationType, completeCallback : @escaping ((Void)->Void)) {
         
         switch type {
             
-        case .ToDown:
+        case .toDown:
             
             //number is bigger, fade out to above
             self.label!.frame.origin.y = 0
@@ -182,7 +182,7 @@ class SteprDigit : UIView {
                 self.label!.frame.origin.y = SteprDigit.distance
             }
             
-        case .ToUp:
+        case .toUp:
             
             //number is smaller, fade out to below
             self.label!.frame.origin.y = 0

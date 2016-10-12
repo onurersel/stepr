@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'stepr'
-  s.version = '0.0.7'
+  s.version = '0.1.0'
   s.license = 'MIT'
   s.summary = 'A stepper input library for iOS with cool animations.'
   s.homepage = 'https://github.com/onurersel/stepr'
@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
   s.resources = ['stepr/images/*.png']
 
   s.requires_arc = true
-  s.dependency "anim", "~> 0.0.7"
+  s.dependency "anim", "~> 0.1"
 end

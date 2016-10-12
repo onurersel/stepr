@@ -4,7 +4,7 @@ use_frameworks!
 
 target 'stepr' do
 
-pod 'anim'
+pod 'anim', '~>0.1'
 
 end
 

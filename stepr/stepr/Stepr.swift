@@ -9,15 +9,44 @@
 import Foundation
 import UIKit
 import anim
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
 
-@objc public protocol SteprDelegate : NSObjectProtocol, UIScrollViewDelegate {
-    optional func numberChanged (number : Int)
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
 }
 
 
 
-public class Stepr : UIView {
+@objc public protocol SteprDelegate : NSObjectProtocol, UIScrollViewDelegate {
+    @objc optional func numberChanged (_ number : Int)
+}
+
+
+
+open class Stepr : UIView {
     
     
     public typealias Ease = anim.Ease
@@ -30,12 +59,12 @@ public class Stepr : UIView {
      *****************************/
     
     public enum ButtonAlignment {
-        case Horizontal, Vertical
+        case horizontal, vertical
     }
     
     
     public enum AnimationType {
-        case ToDown, ToUp, FadeIn
+        case toDown, toUp, fadeIn
     }
 
     
@@ -45,15 +74,15 @@ public class Stepr : UIView {
      /*
      *****************************/
     
-    public var delegate : SteprDelegate?
-    public var selectionChangeCallback : ((number : Int)->Void)?
+    open var delegate : SteprDelegate?
+    open var selectionChangeCallback : ((_ number : Int)->Void)?
     
-    private var number : SteprNumber?
-    private var _buttonAlignment : ButtonAlignment = .Vertical
-    private var _upperLimit : Int?
-    private var _lowerLimit : Int?
-    private var _buttonAdd : UIButton?
-    private var _buttonRemove : UIButton?
+    fileprivate var number : SteprNumber?
+    fileprivate var _buttonAlignment : ButtonAlignment = .vertical
+    fileprivate var _upperLimit : Int?
+    fileprivate var _lowerLimit : Int?
+    fileprivate var _buttonAdd : UIButton?
+    fileprivate var _buttonRemove : UIButton?
     
     
     /*****************************
@@ -64,13 +93,13 @@ public class Stepr : UIView {
     
     // button which increases selection 
     // you can set your own custom UIButton for this
-    public var buttonAdd : UIButton? {
+    open var buttonAdd : UIButton? {
         get {
             return _buttonAdd
         }
         set (v) {
             if let btn = _buttonAdd {
-                btn.removeTarget(self, action: #selector(Stepr.addHandler), forControlEvents: .TouchUpInside)
+                btn.removeTarget(self, action: #selector(Stepr.addHandler), for: .touchUpInside)
                 btn.removeFromSuperview()
             }
             
@@ -79,7 +108,7 @@ public class Stepr : UIView {
             if let btn = _buttonAdd {
                 self.addSubview(btn)
                 btn.sizeToFit()
-                btn.addTarget(self, action: #selector(Stepr.addHandler), forControlEvents: .TouchUpInside)
+                btn.addTarget(self, action: #selector(Stepr.addHandler), for: .touchUpInside)
             }
             
             updateStatesWithLimits()
@@ -92,13 +121,13 @@ public class Stepr : UIView {
     
     // button which decreases selection
     // you can set your own custom UIButton for this
-    public var buttonRemove : UIButton? {
+    open var buttonRemove : UIButton? {
         get {
             return _buttonRemove
         }
         set (v) {
             if let btn = _buttonRemove {
-                btn.removeTarget(self, action: #selector(Stepr.removeHandler), forControlEvents: .TouchUpInside)
+                btn.removeTarget(self, action: #selector(Stepr.removeHandler), for: .touchUpInside)
                 btn.removeFromSuperview()
             }
             
@@ -107,7 +136,7 @@ public class Stepr : UIView {
             if let btn = _buttonRemove {
                 self.addSubview(btn)
                 btn.sizeToFit()
-                btn.addTarget(self, action: #selector(Stepr.removeHandler), forControlEvents: .TouchUpInside)
+                btn.addTarget(self, action: #selector(Stepr.removeHandler), for: .touchUpInside)
             }
             
             updateStatesWithLimits()
@@ -119,7 +148,7 @@ public class Stepr : UIView {
     
     
     // current selected number (or index, if stepr uses custom data)
-    public var currentNumber : Int {
+    open var currentNumber : Int {
         get {
             if let cn = number!.currentNumber {
                 return cn
@@ -138,10 +167,10 @@ public class Stepr : UIView {
                     return
                 }
             } else {
-                if let ll = lowerLimit where ll > v {
+                if let ll = lowerLimit , ll > v {
                     print("Can not set current number to a value lower than lowerLimit. currentNumber:\(currentNumber)   setted number:\(v)   lowerLimit:\(ll)")
                     return
-                } else if let ul = upperLimit where ul < v  {
+                } else if let ul = upperLimit , ul < v  {
                     print("Can not set current number to a value greater than upperLimit. currentNumber:\(currentNumber)   setted number:\(v)   upperLimit:\(ul)")
                     return
                 }
@@ -155,7 +184,7 @@ public class Stepr : UIView {
     // you can set an upper and lower number (or index) limit
     // current number will be adjusted to fit in limits after you define limits
     // to remove limits, just nullify limit values
-    public var upperLimit : Int? {
+    open var upperLimit : Int? {
         get {
             return _upperLimit
         }
@@ -166,7 +195,7 @@ public class Stepr : UIView {
             }
         }
     }
-    public var lowerLimit : Int? {
+    open var lowerLimit : Int? {
         get {
             return _lowerLimit
         }
@@ -181,7 +210,7 @@ public class Stepr : UIView {
     
     // you can assign a custom data array to stepr, and it displays its' value's String representation
     // bounds of data array also acts as upper and lower limits
-    public var dataArray : [AnyObject]? {
+    open var dataArray : [AnyObject]? {
         get {
             return number!.dataArray
         }
@@ -193,7 +222,7 @@ public class Stepr : UIView {
     
     
     // fits text inside stepr's frame width
-    public var adjustsFontSizeToFitWidth : Bool {
+    open var adjustsFontSizeToFitWidth : Bool {
         get {
             return number!.adjustsFontSizeToFitWidth
         }
@@ -204,7 +233,7 @@ public class Stepr : UIView {
     
     
     // change font
-    public var font : UIFont {
+    open var font : UIFont {
         get {
             return number!.font
         }
@@ -215,7 +244,7 @@ public class Stepr : UIView {
     
     
     // change text color (unfortunalety, this is not animatable)
-    public var textColor : UIColor {
+    open var textColor : UIColor {
         get {
             return number!.textColor
         }
@@ -226,7 +255,7 @@ public class Stepr : UIView {
     
     
     // you can display add/remove buttons vertically and horizontally
-    public var buttonAlignment : Stepr.ButtonAlignment {
+    open var buttonAlignment : Stepr.ButtonAlignment {
         get {
             return _buttonAlignment
         }
@@ -240,7 +269,7 @@ public class Stepr : UIView {
     
 
     // ease type of digit fade in animation when it's appearing on screen
-    public var easeDigitFadeIn : Stepr.Ease {
+    open var easeDigitFadeIn : Stepr.Ease {
         get {
             return number!.easeDigitFadeIn
         }
@@ -251,7 +280,7 @@ public class Stepr : UIView {
     
     
     // ease type of digit fade out animation when it's leaving screen
-    public var easeDigitFadeOut : Stepr.Ease {
+    open var easeDigitFadeOut : Stepr.Ease {
         get {
             return number!.easeDigitFadeOut
         }
@@ -261,7 +290,7 @@ public class Stepr : UIView {
     }
     
     // ease type of digit movement animation when it's appearing on screen
-    public var easeDigitChangeEnter : Stepr.Ease {
+    open var easeDigitChangeEnter : Stepr.Ease {
         get {
             return number!.easeDigitChangeEnter
         }
@@ -272,7 +301,7 @@ public class Stepr : UIView {
     
     
     // ease type of digit movement animation when it's leaving on screen
-    public var easeDigitChangeLeave : Stepr.Ease {
+    open var easeDigitChangeLeave : Stepr.Ease {
         get {
             return number!.easeDigitChangeLeave
         }
@@ -283,7 +312,7 @@ public class Stepr : UIView {
     
     
     // ease type of digits' horizontal alignment.
-    public var easeHorizontalAlign : Stepr.Ease {
+    open var easeHorizontalAlign : Stepr.Ease {
         get {
             return number!.easeHorizontalAlign
         }
@@ -293,7 +322,7 @@ public class Stepr : UIView {
     }
     
     // ease duration
-    public var easeDuration : NSTimeInterval {
+    open var easeDuration : TimeInterval {
         get {
             return number!.easeDuration
         }
@@ -303,7 +332,7 @@ public class Stepr : UIView {
     }
     
     // delay value between a digit leaves screen and a new one enters.
-    public var easeShowDelay : NSTimeInterval {
+    open var easeShowDelay : TimeInterval {
         get {
             return number!.easeShowDelay
         }
@@ -342,7 +371,7 @@ public class Stepr : UIView {
     }
     
     
-    private func prepare () {
+    fileprivate func prepare () {
         
         //number
         number = SteprNumber()
@@ -350,12 +379,12 @@ public class Stepr : UIView {
         
         //button add
         let btnAdd = UIButton()
-        btnAdd.setImage(steprImageNamed("arrow-up"), forState: .Normal)
+        btnAdd.setImage(steprImageNamed("arrow-up"), for: UIControlState())
         buttonAdd = btnAdd
         
         //button remove
         let btnRemove = UIButton()
-        btnRemove.setImage(steprImageNamed("arrow-down"), forState: .Normal)
+        btnRemove.setImage(steprImageNamed("arrow-down"), for: UIControlState())
         buttonRemove = btnRemove
         
         //number change callback
@@ -363,9 +392,9 @@ public class Stepr : UIView {
     }
     
     
-    private func steprImageNamed (name : String) -> UIImage {
-        let bundle = NSBundle(forClass: self.classForCoder)
-        let resourcePath = bundle.pathForResource(name, ofType: ".png")
+    fileprivate func steprImageNamed (_ name : String) -> UIImage {
+        let bundle = Bundle(for: self.classForCoder)
+        let resourcePath = bundle.path(forResource: name, ofType: ".png")
         
         return UIImage(contentsOfFile: resourcePath!)!
     }
@@ -377,18 +406,18 @@ public class Stepr : UIView {
      /*
      *****************************/
     
-    override public func layoutSubviews() {
+    override open func layoutSubviews() {
         number?.frame.size.width = self.frame.size.width
         number?.frame.size.height = self.frame.size.height
         
         switch _buttonAlignment {
-        case .Vertical:
+        case .vertical:
             buttonAdd?.frame.origin.x = self.frame.size.width/2.0 - buttonAdd!.frame.size.width/2.0
             buttonAdd?.frame.origin.y = 0
             buttonRemove?.frame.origin.x = self.frame.size.width/2.0 - buttonRemove!.frame.size.width/2.0
             buttonRemove?.frame.origin.y = self.frame.size.height - buttonRemove!.frame.size.height
             
-        case .Horizontal:
+        case .horizontal:
             buttonRemove?.frame.origin.x = 0
             buttonRemove?.frame.origin.y = self.frame.size.height/2.0 - buttonAdd!.frame.size.height/2.0
             buttonAdd?.frame.origin.x = self.frame.size.width - buttonRemove!.frame.size.width
@@ -400,7 +429,7 @@ public class Stepr : UIView {
         super.layoutSubviews()
     }
     
-    private func updateStatesWithLimits() {
+    fileprivate func updateStatesWithLimits() {
         if let cn = number?.currentNumber {
             
             let lower : Int? = (dataArray != nil ? 0 : lowerLimit)
@@ -415,10 +444,10 @@ public class Stepr : UIView {
                 }
                 
                 //enable/disable remove button
-                if number?.currentNumber == ll  &&  buttonRemove!.enabled {
-                    buttonRemove!.enabled = false
-                } else if number?.currentNumber != ll  &&  !buttonRemove!.enabled {
-                    buttonRemove!.enabled = true
+                if number?.currentNumber == ll  &&  buttonRemove!.isEnabled {
+                    buttonRemove!.isEnabled = false
+                } else if number?.currentNumber != ll  &&  !buttonRemove!.isEnabled {
+                    buttonRemove!.isEnabled = true
                 }
                 
             }
@@ -432,10 +461,10 @@ public class Stepr : UIView {
                 }
                 
                 //enable/disable add button
-                if number?.currentNumber == ul  &&  buttonAdd!.enabled {
-                    buttonAdd!.enabled = false
-                } else if number?.currentNumber != ul  &&  !buttonAdd!.enabled {
-                    buttonAdd!.enabled = true
+                if number?.currentNumber == ul  &&  buttonAdd!.isEnabled {
+                    buttonAdd!.isEnabled = false
+                } else if number?.currentNumber != ul  &&  !buttonAdd!.isEnabled {
+                    buttonAdd!.isEnabled = true
                 }
                 
             }
@@ -459,11 +488,11 @@ public class Stepr : UIView {
         updateStatesWithLimits()
     }
     
-    private func numberChangedHandler (number : Int) {
+    fileprivate func numberChangedHandler (_ number : Int) {
         
         delegate?.numberChanged?(number)
         
-        selectionChangeCallback?(number: number)
+        selectionChangeCallback?(number)
         
     }
     
